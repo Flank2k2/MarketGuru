@@ -4,13 +4,13 @@ using System.Text;
 
 namespace MarketGuru.Data.Entities
 {
-    public class StockHistory
+    public class StockRecommendationHistory
     {
         public int Id { get; set; }
         public string Username { get; set; }
         public DateTimeOffset Timestamp { get; set; }
         public string StockTicker { get; set; }
-        public string ResponseType{get; set;}
-        public string Response { get; set; }
+        public string RecommendationReason{get; set;}
+        public string Recommendation { get; set; }
     }
 }

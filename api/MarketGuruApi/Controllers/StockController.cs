@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MarketGuru.Core.Models;
 using MarketGuru.Core.Services;
+using MarketGuruApi.Reccords;
 using Microsoft.Extensions.Logging;
 
 
@@ -24,21 +25,23 @@ namespace MarketGuruApi.Controllers
             _dataService = dataService;
             _recommendationService = recommendationService;
         }
-        
+
         [HttpGet("{ticker}")]
-        public string Get(string ticker)
+        public async Task<ActionResult<StockResponse>> Get(string ticker)
         {
-            return "value";
-        }
+            if (string.IsNullOrWhiteSpace(ticker))
+                return Problem("Invalid stock ticker", statusCode: 400);
 
-        [HttpGet("{ticker}/")]
-        public async Task<ActionResult<StockHistory>> GetHistory(string ticker, DateTime startTime,DateTime endTime)
-        {
+            var stock = await _dataService.RetrieveStockAsync(ticker);
+            if (stock == Stock.UnknownStock)
+                return Problem("Stock not found", statusCode: 404);
+
+            var history = await _dataService.RetrieveStockHistoryAsync(ticker);
+            var recommendation = _recommendationService.CreateRecommendation(stock, history);
+
+            //TODO: Storage here !! 
             
-            return Ok();
+            return Ok(new StockResponse(stock, history, recommendation));
         }
-        
-        
-
     }
 }

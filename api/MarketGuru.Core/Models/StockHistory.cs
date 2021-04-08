@@ -7,20 +7,18 @@ namespace MarketGuru.Core.Models
 {
     public class StockHistory
     {
-        public StockHistory(){}
-
-        public StockHistory(IEnumerable<(DateTime t, decimal value, long volume)> history)
+        public StockHistory(IEnumerable<StockDataPoint> history)
         {
             History = history;
-            StartPeriod = history.Min(x => x.t);
-            EndPeriod = history.Max(x => x.t);
-            Min = history.Min(x => x.value);
-            Max = history.Max(x => x.value);
+            StartPeriod = history.Min(x => x.Timestamp);
+            EndPeriod = history.Max(x => x.Timestamp);
+            Low = history.Min(x => x.CLosingPrice);
+            High = history.Max(x => x.CLosingPrice);
         }
         public DateTime StartPeriod {get; set; }
         public DateTime EndPeriod { get; set; }
-        public IEnumerable<(DateTime t, decimal value, long volume)> History { get; set; }
-        public decimal Max { get; set; }
-        public decimal Min { get; set; }
+        public IEnumerable<StockDataPoint> History { get; set; }
+        public decimal High { get; set; }
+        public decimal Low { get; set; }
     }
 }

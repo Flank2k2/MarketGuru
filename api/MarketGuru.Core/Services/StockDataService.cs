@@ -19,7 +19,7 @@ namespace MarketGuru.Core.Services
         private readonly MarketGuruConfigurations _configurations;
         private readonly IMemoryCache _cache;
 
-        public StockDataService(ILogger logger, StocksClient client, IMemoryCache cache, IOptions<MarketGuruConfigurations> configurationOptions)
+        public StockDataService(ILogger<StockDataService> logger, StocksClient client, IMemoryCache cache, IOptions<MarketGuruConfigurations> configurationOptions)
         {
             _logger = logger;
             _cache = cache;
@@ -37,7 +37,7 @@ namespace MarketGuru.Core.Services
             return $"{nameof(StockHistory)}:{ticker.ToLower()}";
         }
 
-        public async Task<Stock> RetrieveStock(string ticker)
+        public async Task<Stock> RetrieveStockAsync(string ticker)
         {
             if (string.IsNullOrWhiteSpace(ticker)) throw new ArgumentNullException(nameof(ticker));
 
@@ -48,7 +48,9 @@ namespace MarketGuru.Core.Services
             }
 
             _logger.LogDebug("Retrieving stock: {Ticker} from API", ticker);
-            var globalQuote = await _client.GetGlobalQuoteAsync(ticker);
+
+            var searchResult = await _client.SearchSymbolAsync(ticker);
+            var globalQuote = searchResult.FirstOrDefault(x => x.MatchScore >= 0.99m && x.Symbol == ticker.ToUpper());
             if (globalQuote == null)
             {
                 _logger.LogWarning("Stock: {Ticker} was not found", ticker);
@@ -57,8 +59,7 @@ namespace MarketGuru.Core.Services
 
             stock = new Stock()
             {
-                DailyHigh = globalQuote.HighestPrice,
-                DailyLow = globalQuote.LowestPrice,
+                DisplayName = globalQuote.Name,
                 Ticker = globalQuote.Symbol
             };
 
@@ -67,7 +68,7 @@ namespace MarketGuru.Core.Services
             return stock;
         }
 
-        public async Task<StockHistory> RetrieveStockHistory(string ticker)
+        public async Task<StockHistory> RetrieveStockHistoryAsync(string ticker)
         {
             if (string.IsNullOrWhiteSpace(ticker)) throw new ArgumentNullException(nameof(ticker));
 
@@ -82,10 +83,17 @@ namespace MarketGuru.Core.Services
             if (data == null)
                 throw new Exception("Stock not found");
 
-            var sortedData = data.DataPoints.Select(x => (x.Time, x.ClosingPrice, x.Volume))
-                                                                        .OrderByDescending(x => x.Time);
-            stockHistory = new StockHistory(sortedData);
+            var sortedData = data.DataPoints.OrderByDescending(x => x.Time).Select(x => new StockDataPoint()
+            {
+                CLosingPrice = x.ClosingPrice,
+                Timestamp = x.Time,
+                High = x.HighestPrice,
+                Low = x.LowestPrice,
+                Volume = x.Volume
+            }).ToList();
             
+            stockHistory = new StockHistory(sortedData);
+
             _cache.Set(GetStockHistoryCacheKey(ticker), stockHistory, _configurations.StockApiCacheConfiguration);
             return stockHistory;
         }

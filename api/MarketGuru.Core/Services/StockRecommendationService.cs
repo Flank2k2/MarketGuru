@@ -26,7 +26,7 @@ namespace MarketGuru.Core.Services
             _logger.LogDebug("Calculate recommendation for stock: {Ticker} over the last {MaxPeriodsForRecommendation} days", stock.Ticker, _guruConfigurations.MaxPeriodsForRecommendation);
             var periods = history.History.Take(_guruConfigurations.MaxPeriodsForRecommendation);
 
-            if (periods.Sum(x => x.volume) < _guruConfigurations.MaxVolumeForRecommendation)
+            if (periods.Sum(x => x.Volume) < _guruConfigurations.MaxVolumeForRecommendation)
             {
                 _logger.LogDebug("Stock: {Ticker} does not reach volume threshold for recommendation");
                 return new StockRecommendation()
@@ -37,7 +37,7 @@ namespace MarketGuru.Core.Services
 
             }
 
-            if (periods.First().value > periods.Last().value)
+            if (periods.First().CLosingPrice > periods.Last().CLosingPrice)
             {
                 _logger.LogDebug("Calculate recommendation for stock: {Stock}: {Recommendation}", stock.Ticker, "SELL");
                 return new StockRecommendation()
