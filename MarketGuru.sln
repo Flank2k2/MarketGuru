@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketGuru.Core", "MarketGu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketGuru.Data", "MarketGuru.Data\MarketGuru.Data.csproj", "{4EE89F39-246B-4D22-9BEB-7DE5CF945A07}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_tests", "_tests", "{51EA2791-9972-4B10-A5E7-5AC17C27C80A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketGuru.Core.Tests", "MarketGuru.Core.Tests\MarketGuru.Core.Tests.csproj", "{9E388A17-A731-44D6-8DCF-08852D7235EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +31,16 @@ Global
 		{4EE89F39-246B-4D22-9BEB-7DE5CF945A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EE89F39-246B-4D22-9BEB-7DE5CF945A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EE89F39-246B-4D22-9BEB-7DE5CF945A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E388A17-A731-44D6-8DCF-08852D7235EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E388A17-A731-44D6-8DCF-08852D7235EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E388A17-A731-44D6-8DCF-08852D7235EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E388A17-A731-44D6-8DCF-08852D7235EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9E388A17-A731-44D6-8DCF-08852D7235EF} = {51EA2791-9972-4B10-A5E7-5AC17C27C80A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08C8755D-DEBD-4666-913D-4356DC603F5A}
