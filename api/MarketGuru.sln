@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketGuruApi", "MarketGuruApi\MarketGuruApi.csproj", "{9E0716C4-9569-4D0D-B0EA-B0F770BD6674}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketGuruApi", "MarketGuruApi\MarketGuruApi.csproj", "{9E0716C4-9569-4D0D-B0EA-B0F770BD6674}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketGuru.Core", "MarketGuru.Core\MarketGuru.Core.csproj", "{AC09B6CD-6C7A-4785-8039-2FEA99B24AA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketGuru.Core", "MarketGuru.Core\MarketGuru.Core.csproj", "{AC09B6CD-6C7A-4785-8039-2FEA99B24AA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketGuru.Data", "MarketGuru.Data\MarketGuru.Data.csproj", "{4EE89F39-246B-4D22-9BEB-7DE5CF945A07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketGuru.Data", "MarketGuru.Data\MarketGuru.Data.csproj", "{4EE89F39-246B-4D22-9BEB-7DE5CF945A07}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_tests", "_tests", "{51EA2791-9972-4B10-A5E7-5AC17C27C80A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{51EA2791-9972-4B10-A5E7-5AC17C27C80A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketGuru.Core.Tests", "MarketGuru.Core.Tests\MarketGuru.Core.Tests.csproj", "{9E388A17-A731-44D6-8DCF-08852D7235EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketGuru.Core.Tests", "MarketGuru.Core.Tests\MarketGuru.Core.Tests.csproj", "{9E388A17-A731-44D6-8DCF-08852D7235EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
