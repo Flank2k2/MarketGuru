@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using MarketGuru.Core.Models;
-using MarketGuru.Core.Services;
-using MarketGuruApi.Reccords;
+using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Ras.Web.Mvc.Controllers
