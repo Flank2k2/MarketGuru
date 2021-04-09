@@ -20,6 +20,11 @@ const mutations = {
         state.recommendation = response.recommendation;
         state.stock = response.stock;
     },
+    removeCurrent(state){
+        state.history = {};
+        state.recommendation = {};
+        state.stock = {};
+    },
     setLoading(state, loading) {
         state.loading = loading;
     },
@@ -28,7 +33,11 @@ const mutations = {
     }
 };
 
-const getters = {};
+const getters = {
+    getHistory: state => {
+        return state.history.history;
+      }
+};
 
 const actions = {
     async getStockDataFromApi({ commit }, ticker) {
@@ -38,6 +47,7 @@ const actions = {
                 commit('setResponse', rsp.data);
             })
             .catch(e => {
+                commit('removeCurrent');
                 commit('setError',e);
             })
         commit('setLoading', false);

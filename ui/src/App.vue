@@ -8,10 +8,7 @@
     </v-app-bar>
 
     <v-main>
-      <SnackBarNotification
-        v-on:error="onError($event)"
-        v-on:success="onSuccess($event)"
-      />
+      <ErrorNotifications />
 
       <v-container fluid>
         <v-container>
@@ -33,8 +30,8 @@
             </v-row>
           </v-form>
         </v-container>
-        <StockRecommendation />
-        <StockChart />
+        <StockInformation />
+        <StockPriceTable />
       </v-container>
     </v-main>
     <v-footer color="primary">
@@ -48,19 +45,17 @@
 <script>
 import { mapActions } from "vuex";
 
-import StockChart from "./components/StockChart";
-//import StockPriceTable from "./components/StockPriceTable";
-import StockRecommendation from "./components/StockRecommendation";
-import SnackBarNotification from "./components/SnackBarNotification";
+import StockPriceTable from "./components/StockPriceTable";
+import StockInformation from "./components/StockInformation";
+import ErrorNotifications from "./components/ErrorNotifications";
 
 export default {
   name: "App",
 
   components: {
-    SnackBarNotification,
-    StockChart,
-    //  StockPriceTable,
-    StockRecommendation,
+    ErrorNotifications,
+    StockPriceTable,
+    StockInformation,
   },
 
   data: () => ({
@@ -73,10 +68,7 @@ export default {
       },
     ],
   }),
-  errorCaptured: function (err) {
-    this.$root.$emit("error", err);
-    return false;
-  },
+
   methods: {
     getRecommendation: async function () {
       var rst = this.$refs.form.validate();

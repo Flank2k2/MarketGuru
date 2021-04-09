@@ -46,15 +46,15 @@ export default {
     };
   },
   watch: {
-    error(event) {
-      if (event.response) {
+    error(newError) {
+      if (newError.response) {
         this.snackbar = {
           color: "error",
           show: true,
-          event: { title: event, data: event.response.data },
+          event: { title: newError, data: newError.response.data },
         };
       } else {
-        console.error(event);
+        console.error(newError);
       }
     },
   },
