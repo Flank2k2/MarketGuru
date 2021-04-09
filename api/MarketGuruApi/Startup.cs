@@ -37,6 +37,16 @@ namespace MarketGuruApi
                     opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
             
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "MyPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:8080",
+                                            "http://www.contoso.com");
+                    });
+            });
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MarketGuruApi", Version = "v1" });
@@ -54,6 +64,7 @@ namespace MarketGuruApi
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors("MyPolicy");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
