@@ -29,7 +29,7 @@ namespace MarketGuru.Core.Services
 
             //Sorting the collection since i am not going to make assumptions...
             //Really this should be implement with proper collection and IComparable but for the moment we are dealing with n<1000 
-            var sortedHistory = history.History.OrderBy(x => x.Timestamp);
+            var sortedHistory = history.History.OrderByDescending(x => x.Timestamp);
             var periods = sortedHistory.Take(_guruConfigurations.MaxPeriodsForRecommendation);
             var initialStockData = periods.First();
             var finalStockData = periods.Last();
@@ -54,7 +54,7 @@ namespace MarketGuru.Core.Services
                 return new StockRecommendation()
                 {
                     Recommendation = Recommendation.Sell,
-                    Reason = $"Stock has lost ${priceDifference} over {periodLengthInDays} days"
+                    Reason = $"Stock has lost ${Math.Abs(priceDifference)} over {periodLengthInDays} days"
                 };
             }
 
