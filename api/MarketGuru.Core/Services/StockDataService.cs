@@ -15,9 +15,9 @@ namespace MarketGuru.Core.Services
     public class StockDataService
     {
         private readonly ILogger _logger;
+        private readonly IMemoryCache _cache;
         private readonly StocksClient _client;
         private readonly MarketGuruConfigurations _configurations;
-        private readonly IMemoryCache _cache;
 
         public StockDataService(ILogger<StockDataService> logger, StocksClient client, IMemoryCache cache, IOptions<MarketGuruConfigurations> configurationOptions)
         {
@@ -57,10 +57,16 @@ namespace MarketGuru.Core.Services
                 return Stock.UnknownStock;
             }
 
+            var dailyInfo = await _client.GetGlobalQuoteAsync(ticker);
+            if (dailyInfo == null)
+                throw new Exception($"Failed to retrieve daily stock information: {ticker}");
+            
             stock = new Stock()
             {
                 DisplayName = globalQuote.Name,
-                Ticker = globalQuote.Symbol
+                Ticker = globalQuote.Symbol,
+                DailyHigh = dailyInfo.HighestPrice,
+                DailyLow = dailyInfo.LowestPrice,
             };
 
             _cache.Set(GetStockCacheKey(ticker), stock, _configurations.StockApiCacheConfiguration);
@@ -79,19 +85,19 @@ namespace MarketGuru.Core.Services
             }
 
             _logger.LogDebug("Retrieving stock history: {Ticker} from API", ticker);
-            var data = await _client.GetTimeSeriesAsync(ticker, Interval.Daily, OutputSize.Compact, isAdjusted: true);
+            var data = await _client.GetTimeSeriesAsync(ticker, Interval.Monthly, OutputSize.Compact, isAdjusted: true);
             if (data == null)
                 throw new Exception("Stock not found");
 
             var sortedData = data.DataPoints.OrderByDescending(x => x.Time).Select(x => new StockDataPoint()
             {
-                CLosingPrice = x.ClosingPrice,
+                ClosingPrice = x.ClosingPrice,
                 Timestamp = x.Time,
                 High = x.HighestPrice,
                 Low = x.LowestPrice,
                 Volume = x.Volume
             }).ToList();
-            
+
             stockHistory = new StockHistory(sortedData);
 
             _cache.Set(GetStockHistoryCacheKey(ticker), stockHistory, _configurations.StockApiCacheConfiguration);

@@ -11,39 +11,50 @@ namespace MarketGuru.Core.Services
 {
     public class StockRecommendationService
     {
-        private readonly MarketGuruConfigurations _guruConfigurations;
         private readonly ILogger _logger;
+        private readonly MarketGuruConfigurations _guruConfigurations;
+
         public StockRecommendationService(ILogger<StockRecommendationService> logger, IOptions<MarketGuruConfigurations> appConfiguration)
         {
             _guruConfigurations = appConfiguration?.Value;
             _logger = logger;
         }
+        
         public StockRecommendation CreateRecommendation(Stock stock, StockHistory history)
         {
             if (stock == null) throw new ArgumentNullException(nameof(stock));
             if (history == null) throw new ArgumentNullException(nameof(history));
 
             _logger.LogDebug("Calculate recommendation for stock: {Ticker} over the last {MaxPeriodsForRecommendation} days", stock.Ticker, _guruConfigurations.MaxPeriodsForRecommendation);
-            var periods = history.History.Take(_guruConfigurations.MaxPeriodsForRecommendation);
 
-            if (periods.Sum(x => x.Volume) < _guruConfigurations.MaxVolumeForRecommendation)
+            //Sorting the collection since i am not going to make assumptions...
+            //Really this should be implement with proper collection and IComparable but for the moment we are dealing with n<1000 
+            var sortedHistory = history.History.OrderBy(x => x.Timestamp);
+            var periods = sortedHistory.Take(_guruConfigurations.MaxPeriodsForRecommendation);
+            var initialStockData = periods.First();
+            var finalStockData = periods.Last();
+            var totalVolume = periods.Sum(x => x.Volume);
+            var periodLengthInDays = (finalStockData.Timestamp - initialStockData.Timestamp).TotalDays;
+            var priceDifference = finalStockData.ClosingPrice - initialStockData.ClosingPrice;
+            
+            if (totalVolume < _guruConfigurations.MaxVolumeForRecommendation)
             {
                 _logger.LogDebug("Stock: {Ticker} does not reach volume threshold for recommendation");
                 return new StockRecommendation()
                 {
-                    Reason = $"Stock is bellow volume threshold ({_guruConfigurations.MaxVolumeForRecommendation} over {_guruConfigurations.MaxPeriodsForRecommendation} days)",
+                    Reason = $"Stock is bellow volume threshold ({_guruConfigurations.MaxVolumeForRecommendation} over {periodLengthInDays} days)",
                     Recommendation = Recommendation.Unknown
                 };
 
             }
-
-            if (periods.First().CLosingPrice > periods.Last().CLosingPrice)
+            
+            if (priceDifference < _guruConfigurations.SellThreshold)
             {
                 _logger.LogDebug("Calculate recommendation for stock: {Stock}: {Recommendation}", stock.Ticker, "SELL");
                 return new StockRecommendation()
                 {
                     Recommendation = Recommendation.Sell,
-                    Reason = "Stock is decreasing over period"
+                    Reason = $"Stock has lost ${priceDifference} over {periodLengthInDays} days"
                 };
             }
 
@@ -51,9 +62,9 @@ namespace MarketGuru.Core.Services
             return new StockRecommendation()
             {
                 Recommendation = Recommendation.Buy,
-                Reason = "Stock is increasing over period"
+                Reason = $"Stock has gained ${priceDifference} over {periodLengthInDays} days"
             };
         }
-        
+
     }
 }

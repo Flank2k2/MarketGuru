@@ -32,6 +32,10 @@ namespace MarketGuruApi.Controllers
             if (string.IsNullOrWhiteSpace(ticker))
                 return Problem("Invalid stock ticker", statusCode: 400);
 
+            //Sanitize input
+            ticker = ticker.Trim().ToUpper();
+
+            //Get data
             var stock = await _dataService.RetrieveStockAsync(ticker);
             if (stock == Stock.UnknownStock)
                 return Problem("Stock not found", statusCode: 404);
@@ -40,6 +44,7 @@ namespace MarketGuruApi.Controllers
             var recommendation = _recommendationService.CreateRecommendation(stock, history);
 
             //TODO: Storage here !! 
+            
             
             return Ok(new StockResponse(stock, history, recommendation));
         }

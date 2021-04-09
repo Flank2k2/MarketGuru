@@ -9,6 +9,7 @@ namespace MarketGuru.Core.Configurations
         public string ApiKey { get; set; }
         public TimeSpan StockApiCacheConfiguration {get; set;} = TimeSpan.FromHours(5);
         public int MaxVolumeForRecommendation { get; set; } = 10000;
-        public int MaxPeriodsForRecommendation { get; set; } = 15;
+        public int MaxPeriodsForRecommendation { get; set; } = 3;
+        public int SellThreshold { get; set; } = 0;
     }
 }
