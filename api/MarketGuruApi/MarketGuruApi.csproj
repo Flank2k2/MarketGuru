@@ -4,6 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>47c8806f-4a30-422a-b08f-32462b9f438e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..</DockerfileContext>
+    <Description>Market Guru Api</Description>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
