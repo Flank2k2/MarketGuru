@@ -36,14 +36,14 @@ namespace MarketGuruApi
                 {
                     opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
-            
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: "MyPolicy",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:8080",
-                                            "http://www.contoso.com");
+                        
+                        builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>());
                     });
             });
             
