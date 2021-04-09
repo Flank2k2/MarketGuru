@@ -33,11 +33,7 @@ const mutations = {
     }
 };
 
-const getters = {
-    getHistory: state => {
-        return state.history.history;
-      }
-};
+const getters = {};
 
 const actions = {
     async getStockDataFromApi({ commit }, ticker) {
