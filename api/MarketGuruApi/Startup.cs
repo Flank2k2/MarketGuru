@@ -18,6 +18,7 @@ namespace MarketGuruApi
 {
     public class Startup
     {
+        private static string CorsPolicyName = "MyPolicy";
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -39,10 +40,9 @@ namespace MarketGuruApi
 
             services.AddCors(options =>
             {
-                options.AddPolicy(name: "MyPolicy",
+                options.AddPolicy(CorsPolicyName,
                     builder =>
                     {
-                        
                         builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>());
                     });
             });
@@ -64,12 +64,13 @@ namespace MarketGuruApi
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MarketGuruApi v1"));
             app.UseRouting();
-            app.UseCors("MyPolicy");
+            app.UseCors(CorsPolicyName);
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers()
+                        .RequireCors(CorsPolicyName);
             });
         }
     }
