@@ -30,7 +30,6 @@ namespace MarketGuruApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCoreServices();
-            
             services.AddMemoryCache();
             services.AddControllers()
                 .AddJsonOptions(opts =>
@@ -70,7 +69,6 @@ namespace MarketGuruApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //.RequireCors(CorsPolicyName);
             });
         }
     }
