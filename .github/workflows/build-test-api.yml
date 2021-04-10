@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - hotfix/*
 
 defaults:
   run:
