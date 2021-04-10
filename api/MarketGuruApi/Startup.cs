@@ -53,6 +53,10 @@ namespace MarketGuruApi
                 app.UseDeveloperExceptionPage();
                 app.UseHttpsRedirection();
             }
+            else
+            {
+                app.UseExceptionHandler("/error");
+            }
           
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MarketGuruApi v1"));
