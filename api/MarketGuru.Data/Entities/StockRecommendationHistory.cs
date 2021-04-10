@@ -6,7 +6,6 @@ namespace MarketGuru.Data.Entities
 {
     public class StockRecommendationHistory
     {
-        public string Id { get; set; }
         public string Username { get; set; }
         public DateTime Timestamp { get; set; }
         public string StockTicker { get; set; }
@@ -19,7 +18,6 @@ namespace MarketGuru.Data.Entities
             {
                 return new Dictionary<string, object>()
                 {
-                    {"Id" , value.Id},
                     {"Username" , value.Username},
                     {"StockTicker" , value.StockTicker},
                     {"Timestamp" , value.Timestamp.ToUniversalTime()},
@@ -40,8 +38,6 @@ namespace MarketGuru.Data.Entities
                    Recommendation = (string) valueDict["Recommendation"],
                    StockTicker = (string) valueDict["StockTicker"],
                    Username = (string) valueDict["Username"],
-                   Id = (string) valueDict["Id"],
-
                 };
 
                 return stockRecommendationHistory;
