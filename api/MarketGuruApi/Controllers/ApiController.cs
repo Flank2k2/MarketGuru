@@ -1,11 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace Ras.Web.Mvc.Controllers
 {
@@ -13,14 +11,13 @@ namespace Ras.Web.Mvc.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ApiController : ControllerBase
     {
-        private readonly ILogger _logger;
-        private readonly IConfiguration _config;
-        public ApiController(IConfiguration config,  ILogger<ApiController> logger)
+        [AllowAnonymous]
+        [Route("/error")]
+        public IActionResult Error()
         {
-            _config = config;
-            _logger = logger;
+            return Problem();
         }
-
+        
         [AllowAnonymous]
         [Route("/")]
         public IActionResult Index()
