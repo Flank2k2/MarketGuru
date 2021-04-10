@@ -40,7 +40,7 @@ namespace MarketGuruApi
 
             services.AddCors(options =>
             {
-                options.AddPolicy(CorsPolicyName,
+                options.AddDefaultPolicy(
                     builder =>
                     {
                         builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>());
@@ -64,13 +64,13 @@ namespace MarketGuruApi
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MarketGuruApi v1"));
             app.UseRouting();
-            app.UseCors(CorsPolicyName);
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers()
-                        .RequireCors(CorsPolicyName);
+                endpoints.MapControllers();
+                //.RequireCors(CorsPolicyName);
             });
         }
     }
