@@ -2,9 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MarketGuru.Core.Models;
 using MarketGuru.Core.Services;
+using MarketGuru.Data;
+using MarketGuru.Data.Entities;
 using MarketGuruApi.Reccords;
 using Microsoft.Extensions.Logging;
 
@@ -18,16 +21,17 @@ namespace MarketGuruApi.Controllers
         private readonly ILogger _logger;
         private readonly StockDataService _dataService;
         private readonly StockRecommendationService _recommendationService;
-
-        public StockController(ILogger<StockController> logger, StockDataService dataService, StockRecommendationService recommendationService)
+        private readonly StockRecommendationRepository _repository;
+        public StockController(ILogger<StockController> logger, StockDataService dataService, StockRecommendationService recommendationService, StockRecommendationRepository repository)
         {
             _logger = logger;
             _dataService = dataService;
             _recommendationService = recommendationService;
+            _repository = repository;
         }
 
         [HttpGet("{ticker}")]
-        public async Task<ActionResult<StockResponse>> Get(string ticker)
+        public async Task<ActionResult<StockResponse>> Get(string ticker, CancellationToken token = default)
         {
             if (string.IsNullOrWhiteSpace(ticker))
                 return Problem("Invalid stock ticker", statusCode: 400);
@@ -42,9 +46,15 @@ namespace MarketGuruApi.Controllers
 
             var history = await _dataService.RetrieveStockHistoryAsync(ticker);
             var recommendation = _recommendationService.CreateRecommendation(stock, history);
-
-            //TODO: Storage here !! 
             
+            await _repository.SaveStoreRecommendationHistory(new StockRecommendationHistory()
+            {
+                Recommendation = $"{recommendation.Recommendation}",
+                StockTicker = stock.Ticker,
+                RecommendationReason = recommendation.Reason,
+                Timestamp = DateTime.UtcNow,
+                Username = User?.Identity?.Name ?? "Anonymous"
+            }, token);
             
             return Ok(new StockResponse(stock, history, recommendation));
         }
