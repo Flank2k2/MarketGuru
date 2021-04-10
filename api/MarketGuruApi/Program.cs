@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,11 @@ namespace MarketGuruApi
     {
         public static void Main(string[] args)
         {
+            foreach (DictionaryEntry  kv in Environment.GetEnvironmentVariables())
+            {
+                Console.WriteLine($"{kv.Key}: {kv.Value}");
+            }
+
             CreateHostBuilder(args).Build().Run();
         }
 
