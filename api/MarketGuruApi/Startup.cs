@@ -23,6 +23,7 @@ namespace MarketGuruApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCoreServices();
+            services.AddMarketGuruRepository();
             
             services.AddMemoryCache();
             services.AddControllers()

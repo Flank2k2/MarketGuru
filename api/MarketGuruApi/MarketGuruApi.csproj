@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MarketGuru.Core\MarketGuru.Core.csproj" />
+    <ProjectReference Include="..\MarketGuru.Data\MarketGuru.Data.Firestore.csproj" />
   </ItemGroup>
 
 </Project>
