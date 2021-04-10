@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - hotfix-container-500
 
 defaults:
   run:

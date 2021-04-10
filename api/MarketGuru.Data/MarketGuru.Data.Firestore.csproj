@@ -10,6 +10,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
 
+    <!-- Lol ! https://github.com/GoogleCloudPlatform/google-cloud-dotnet-powerpack/issues/22-->
+    <PackageReference Include="Grpc.Core" Version="2.36.4" />
   </ItemGroup>
 
 </Project>
