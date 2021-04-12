@@ -19,10 +19,10 @@ namespace MarketGuruApi.Controllers
     public class StockController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly StockDataService _dataService;
+        private readonly IStockDataService _dataService;
         private readonly StockRecommendationService _recommendationService;
         private readonly StockRecommendationRepository _repository;
-        public StockController(ILogger<StockController> logger, StockDataService dataService, StockRecommendationService recommendationService, StockRecommendationRepository repository)
+        public StockController(ILogger<StockController> logger, IStockDataService dataService, StockRecommendationService recommendationService, StockRecommendationRepository repository)
         {
             _logger = logger;
             _dataService = dataService;
@@ -47,7 +47,7 @@ namespace MarketGuruApi.Controllers
             var history = await _dataService.RetrieveStockHistoryAsync(ticker);
             var recommendation = _recommendationService.CreateRecommendation(stock, history);
             
-            await _repository.SaveStoreRecommendationHistory(new StockRecommendationHistory()
+           var storageId =  await _repository.SaveStoreRecommendationHistory(new StockRecommendationHistory()
             {
                 Recommendation = $"{recommendation.Recommendation}",
                 StockTicker = stock.Ticker,
@@ -56,7 +56,7 @@ namespace MarketGuruApi.Controllers
                 Username = User?.Identity?.Name ?? "Anonymous"
             }, token);
             
-            return Ok(new StockResponse(stock, history, recommendation));
+            return Ok(new StockResponse(stock, history, recommendation, storageId));
         }
     }
 }

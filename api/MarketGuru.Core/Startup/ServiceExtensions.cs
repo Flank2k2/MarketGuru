@@ -38,7 +38,7 @@ namespace MarketGuru.Core
                     return new AlphaVantageClient(appConfig.ApiKey, httpClient).Stocks();
                 });
 
-                services.AddScoped<StockDataService>();
+                services.AddScoped<IStockDataService,StockDataService>();
                 services.AddScoped<StockRecommendationService>();
 
                 return services;

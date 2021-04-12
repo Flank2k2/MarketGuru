@@ -6,5 +6,5 @@ using MarketGuru.Core.Models;
 
 namespace MarketGuruApi.Reccords
 {
-    public record StockResponse(Stock Stock, StockHistory History, StockRecommendation Recommendation);
+    public record StockResponse(Stock Stock, StockHistory History, StockRecommendation Recommendation, string Id);
 }
