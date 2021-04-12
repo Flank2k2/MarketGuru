@@ -12,7 +12,13 @@ using Microsoft.Extensions.Options;
 
 namespace MarketGuru.Core.Services
 {
-    public class StockDataService
+    public interface IStockDataService
+    {
+        Task<Stock> RetrieveStockAsync(string ticker);
+        Task<StockHistory> RetrieveStockHistoryAsync(string ticker);
+    }
+
+    public class StockDataService : IStockDataService
     {
         private readonly ILogger _logger;
         private readonly IMemoryCache _cache;
@@ -67,6 +73,7 @@ namespace MarketGuru.Core.Services
                 Ticker = globalQuote.Symbol,
                 DailyHigh = dailyInfo.HighestPrice,
                 DailyLow = dailyInfo.LowestPrice,
+                ClosingPrice =  dailyInfo.Price,
             };
 
             _cache.Set(GetStockCacheKey(ticker), stock, _configurations.StockApiCacheConfiguration);

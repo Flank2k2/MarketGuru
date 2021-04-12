@@ -9,7 +9,7 @@
       <v-card-text>
         <v-row align="center"> High:{{ this.stock.dailyHigh }} </v-row>
         <v-row align="center"> Low:{{ this.stock.dailyLow }} </v-row>
-        <v-row align="center"> Price:{{ this.stock.dailyLow }} </v-row>
+        <v-row align="center"> Price:{{ this.stock.closingPrice }} </v-row>
       </v-card-text>
       <v-divider></v-divider>
 
