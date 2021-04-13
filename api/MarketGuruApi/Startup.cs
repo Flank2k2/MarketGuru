@@ -26,7 +26,7 @@ namespace MarketGuruApi
         {
             services.AddCoreServices();
             services.AddMarketGuruRepository();
-            services.AddHealthChecks().AddPrivateMemoryHealthCheck((5000L*1024*1024));
+            services.AddHealthChecks().AddPrivateMemoryHealthCheck(Configuration.GetSection("Healthchecks:MaxMemoryInMb").Get<int>()*1024L*1024);
 
             services.AddMemoryCache();
             services.AddControllers()
