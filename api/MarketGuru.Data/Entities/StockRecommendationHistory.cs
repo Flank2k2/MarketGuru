@@ -34,6 +34,7 @@ namespace MarketGuru.Data.Entities
                 var stockRecommendationHistory = new StockRecommendationHistory()
                 {
                    Timestamp =  timestamp.ToDateTime(),
+                    
                    RecommendationReason =(string) valueDict["RecommendationReason"],    
                    Recommendation = (string) valueDict["Recommendation"],
                    StockTicker = (string) valueDict["StockTicker"],

@@ -46,6 +46,11 @@ export default {
   },
   watch: {
     history(data) {
+      if (!data.history)
+      {
+        this.tableData=[];
+        return;
+      }
       this.tableData = data.history.map((currentValue, index, array) => {
         let icon = "";
         let color = "green";

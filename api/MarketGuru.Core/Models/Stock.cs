@@ -12,5 +12,6 @@ namespace MarketGuru.Core.Models
         public string Ticker { get; set; }
         public decimal DailyHigh {get; set;}
         public decimal DailyLow { get; set; }
+        public decimal ClosingPrice {get; set; }
     }
 }

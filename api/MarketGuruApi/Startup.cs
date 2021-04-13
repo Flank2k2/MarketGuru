@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace MarketGuruApi
 {
@@ -24,7 +26,8 @@ namespace MarketGuruApi
         {
             services.AddCoreServices();
             services.AddMarketGuruRepository();
-            
+            services.AddHealthChecks().AddPrivateMemoryHealthCheck((5000L*1024*1024));
+
             services.AddMemoryCache();
             services.AddControllers()
                 .AddJsonOptions(opts =>
@@ -69,6 +72,12 @@ namespace MarketGuruApi
             {
                 endpoints.MapControllers()
                         .RequireCors(CorsPolicyName);
+                
+                endpoints.MapHealthChecks("/healthz", new HealthCheckOptions
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
         }
     }

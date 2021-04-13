@@ -20,7 +20,7 @@ namespace MarketGuru.Core
                         action?.Invoke(opt);
                     });
 
-                services.AddScoped<StockRecommendationRepository>();
+                services.AddScoped<IStockRecommendationRepository,StockRecommendationRepository>();
 
                 return services;
             }

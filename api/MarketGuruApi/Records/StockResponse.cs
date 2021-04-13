@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MarketGuru.Core.Models;
 
-namespace MarketGuruApi.Reccords
+namespace MarketGuruApi.Records
 {
-    public record StockResponse(Stock Stock, StockHistory History, StockRecommendation Recommendation);
+
+    public record StockResponse(Stock Stock, StockHistory History, StockRecommendation Recommendation, string Id);
 }
