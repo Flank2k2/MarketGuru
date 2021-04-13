@@ -31,7 +31,7 @@ The codebase is separated in 2 part:
     - No recommendation is the volume of trading is below a set threshold.
  - The period is not a defined set of days, but the last 3 data points returned by the API. 
     - As a result, the period is between 30 and 60 days depending on the day of the current month (Modulo opening trading days...). 
- - The yearly trend is the chart of the January price for the past 5 years.
+ - The yearly trend is the chart of the January price for the past 5 data points.
 
 ### Backend API point of interest:
 
