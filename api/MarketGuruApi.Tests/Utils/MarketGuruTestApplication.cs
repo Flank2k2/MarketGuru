@@ -16,8 +16,8 @@ namespace MarketGuruApi.Tests.Utils
     {
         public static Stock ReferenceStock = new Stock()
         {
-            Ticker = "AAPL",
-            DisplayName = "Apple Inc",
+            Ticker = "MSFT",
+            DisplayName = "Microsoft Corporation",
             DailyHigh = 133.04m,
             DailyLow = 129.47m,
             ClosingPrice = 132.24m
@@ -25,14 +25,15 @@ namespace MarketGuruApi.Tests.Utils
         public static StockHistory ReferenceStockHistory = new StockHistory(new List<StockDataPoint>()
         {
             new StockDataPoint() {ClosingPrice = 125.0m, High = 130.0m, Low = 120.0m, Timestamp = DateTime.UtcNow, Volume = 1000},
-            new StockDataPoint() {ClosingPrice = 125.0m, High = 130.0m, Low = 120.0m, Timestamp = DateTime.UtcNow.AddMonths(5), Volume = 1000},
+            new StockDataPoint() {ClosingPrice = 125.0m, High = 130.0m, Low = 120.0m, Timestamp = DateTime.UtcNow.AddMonths(-1), Volume = 1000},
             new StockDataPoint() {ClosingPrice = 125.0m, High = 130.0m, Low = 120.0m, Timestamp = DateTime.UtcNow.AddMonths(-2), Volume = 1000},
             new StockDataPoint() {ClosingPrice = 125.0m, High = 130.0m, Low = 120.0m, Timestamp = DateTime.UtcNow.AddMonths(-3), Volume = 1000},
             new StockDataPoint() {ClosingPrice = 125.0m, High = 130.0m, Low = 120.0m, Timestamp = DateTime.UtcNow.AddMonths(-4), Volume = 1000},
         });
 
         public static string FirestoreProjectId = "marketguru-data";
-        public static string FirestoreEnvironment = $"test{Guid.NewGuid()}";
+        public static string UnknownStock = "UNKNOWN";
+        public static string FirestoreEnvironment = $"environment/test{Guid.NewGuid()}";
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         { 
@@ -41,7 +42,7 @@ namespace MarketGuruApi.Tests.Utils
             {
                 services.AddMarketGuruRepository(x =>
                 {
-                    x.Database = $"environment/{FirestoreEnvironment}";
+                    x.Database = $"{FirestoreEnvironment}";
                 });
 
                 //Override service
@@ -49,10 +50,10 @@ namespace MarketGuruApi.Tests.Utils
                 {
                     var dataService = new Mock<IStockDataService>();
 
-                    dataService.Setup(x => x.RetrieveStockAsync("AAPL"))
+                    dataService.Setup(x => x.RetrieveStockAsync(ReferenceStock.Ticker))
                         .ReturnsAsync(() => ReferenceStock);
                     
-                    dataService.Setup(x => x.RetrieveStockAsync("UNKNOWN"))
+                    dataService.Setup(x => x.RetrieveStockAsync(UnknownStock))
                         .ReturnsAsync(() => Stock.UnknownStock);
 
                     dataService.Setup(x => x.RetrieveStockHistoryAsync(It.IsAny<string>()))

@@ -1,7 +1,7 @@
-﻿using MarketGuruApi.Reccords;
+﻿using MarketGuruApi.Records;
 using MarketGuruApi.Tests.Utils;
+using Newtonsoft.Json;
 using System.Net;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -27,11 +27,11 @@ namespace MarketGuruApi.Tests
             var response = await client.GetAsync($"/api/stock/{MarketGuruTestApplication.ReferenceStock.Ticker}");
 
             //Assert
-            var cc = response.Content.ReadAsStringAsync().Result;
             response.EnsureSuccessStatusCode();
 
-            var content = await response.Content.ReadFromJsonAsync<StockResponse>();
-            Assert.Equal(MarketGuruTestApplication.ReferenceStock.Ticker, content.Stock.Ticker);
+            var content = await response.Content.ReadAsStringAsync();
+            var stockResponse = JsonConvert.DeserializeObject<StockResponse>(content);
+            Assert.Equal(MarketGuruTestApplication.ReferenceStock.Ticker, stockResponse.Stock.Ticker);
         }
         
         [Fact]
@@ -45,11 +45,12 @@ namespace MarketGuruApi.Tests
             var response = await client.GetAsync($"/api/stock/{MarketGuruTestApplication.ReferenceStock.Ticker}");
 
             //Assert
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadFromJsonAsync<StockResponse>();
-            var storeData = await firestoreClient.RetrieveApiRecommendationById(content.Id);
+            response.EnsureSuccessStatusCode(); 
+            var content = await response.Content.ReadAsStringAsync();
+            var stockResponse = JsonConvert.DeserializeObject<StockResponse>(content);
+            var data = await firestoreClient.RetrieveApiRecommendationById(stockResponse.Id);
             
-            
+            Assert.Equal(data["Recommendation"], stockResponse.Recommendation.Recommendation.ToString());
         }
         
         [Fact]
@@ -59,7 +60,7 @@ namespace MarketGuruApi.Tests
             var client = _factory.CreateClient();
 
             // Act
-            var response = await client.GetAsync($"/api/stock/UNKNOWN");
+            var response = await client.GetAsync($"/api/stock/{MarketGuruTestApplication.UnknownStock}");
 
             //Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);

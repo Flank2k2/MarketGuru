@@ -10,13 +10,17 @@ namespace MarketGuruApi.Tests.Utils
     public class DataRepositoryClient
     {
 
-        public async Task<IEnumerable<DocumentSnapshot>> RetrieveApiRecommendationById(string id)
+        public async Task<Dictionary<string,object>> RetrieveApiRecommendationById(string id)
         {
             var firestoreDb =  FirestoreDb.Create(MarketGuruTestApplication.FirestoreProjectId);
-
             var collection = firestoreDb.Collection($"{MarketGuruTestApplication.FirestoreEnvironment}/history");
-            var snapshot = await collection.WhereEqualTo("Id", id).GetSnapshotAsync();
-            return snapshot.Documents;
+
+            var docRef = collection.Document(id);
+            var snapshot =  await docRef.GetSnapshotAsync();
+            if (snapshot.Exists == false)
+                return new Dictionary<string, object>();
+
+            return snapshot.ToDictionary();
         }
     }
 }

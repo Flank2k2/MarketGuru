@@ -8,7 +8,7 @@ using MarketGuru.Core.Models;
 using MarketGuru.Core.Services;
 using MarketGuru.Data;
 using MarketGuru.Data.Entities;
-using MarketGuruApi.Reccords;
+using MarketGuruApi.Records;
 using Microsoft.Extensions.Logging;
 
 
