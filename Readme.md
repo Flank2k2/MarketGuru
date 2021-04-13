@@ -57,15 +57,15 @@ The codebase is separated in 2 part:
 
 1. **Script IAM / cloud deployment:**.   
 The initial cloud run and accounts setup was done manually. This is not a reproducible nor documented process.
-3. **Release / Version management:**.   
-Every commit/PR to main will "deploy" to production. We do not tag commits nor create release packages for dependencies.
+2. **Separate Domain entities and DTO:**.   
+The API serialize the domain entities in the reponse. This is good enough for now but we will need to create Dto / response records at some point.
 4. **Properly handle API rate limiting.**.  
- Right now the stock API client library will throw an exception when the API hit the rate limit. (The vendor API does not return a HTTP 429). 
- We either need to re-implement the HttpClient OR add our own rate limiting beforehand. 
+ The financial API library will throw an exception when the API hit the rate limit. (The vendor does not return a HTTP 429). 
+ We either need to re-implement the HttpClient to handle this situation OR add our own rate limiting within the API. 
 5. **Improve secret management:**    
-The API secret is an environment variable setup in Cloud Run configuration. A more secure way would be to implement an IConfigurationProvider and read the secrets from a KMS.
+The API secret is an environment variable setup in Cloud Run. A more secure way would be to implement an IConfigurationProvider and read the secrets from a KMS.
 6. **Complete repository abstraction**.   
 The configuration and entities of the data layer are strongly tied to the storage implementation (FirestoreDb). We could refine the design to ease new storage implementation.
 7. **Add authentication**
-8. **Add End to end testing of UI:**
+8. **Add end to end testing of UI:**
 9. **Finish Unit Testing of Core services**
