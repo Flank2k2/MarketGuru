@@ -3,6 +3,8 @@
 ## Proposed solution:
 
 This is an "enterprizey" solution to the problem. 
+UI: https://flank2k2.github.io/MarketGuru/
+Api: https://marketguru-api-3tfjt4473a-uc.a.run.app/swagger/index.html
 
 Due to the choice of financial data vendor [AlphaVantage](https://www.alphavantage.co/documentation/) we are limited to about 1 stock quote per minute. 
 We are limited to 5 api calls per minute and the data service is calling the vendor API 3 times for each quote:
