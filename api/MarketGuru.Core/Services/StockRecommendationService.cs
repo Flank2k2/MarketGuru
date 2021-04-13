@@ -47,14 +47,15 @@ namespace MarketGuru.Core.Services
                 };
 
             }
-            
+
+            var priceDifferenceDisplay = Math.Abs(Math.Round(priceDifference, 2));
             if (priceDifference < _guruConfigurations.SellThreshold)
             {
                 _logger.LogDebug("Calculate recommendation for stock: {Stock}: {Recommendation}", stock.Ticker, "SELL");
                 return new StockRecommendation()
                 {
                     Recommendation = Recommendation.Sell,
-                    Reason = $"Stock has lost ${Math.Abs(priceDifference)} over {periodLengthInDays} days"
+                    Reason = $"Stock has lost ${priceDifferenceDisplay} over {periodLengthInDays} days"
                 };
             }
 
@@ -62,7 +63,7 @@ namespace MarketGuru.Core.Services
             return new StockRecommendation()
             {
                 Recommendation = Recommendation.Buy,
-                Reason = $"Stock has gained ${priceDifference} over {periodLengthInDays} days"
+                Reason = $"Stock has gained ${priceDifferenceDisplay} over {periodLengthInDays} days"
             };
         }
 

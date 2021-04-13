@@ -47,11 +47,11 @@ export default {
   },
   watch: {
     error(newError) {
-      if (newError.response) {
+      if (newError.response || newError.message) {
         this.snackbar = {
           color: "error",
           show: true,
-          event: { title: newError, data: newError.response.data },
+          event: { title: newError, data: newError?.response?.data ?? newError.message},
         };
       } else {
         console.error(newError);
