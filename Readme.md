@@ -30,7 +30,7 @@ The codebase is separated in 2 part:
     - Buy if price difference between start and end period is over a set threshold.
     - No recommendation is the volume of trading is below a set threshold.
  - The period is not a defined set of days, but the last 3 data points returned by the API. 
-    - When using monthly data, we will usually get between 30 and 60 days depending on the day of the current month (Modulo opening trading days...). 
+    - As a result, the period is between 30 and 60 days depending on the day of the current month (Modulo opening trading days...). 
  - The yearly trend is the chart of the January price for the past 5 years.
 
 ### Backend API point of interest:
