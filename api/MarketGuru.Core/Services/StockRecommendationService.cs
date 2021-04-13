@@ -41,6 +41,7 @@ namespace MarketGuru.Core.Services
             var totalVolume = periods.Sum(x => x.Volume);
             var periodLengthInDays = (mostRecentStockData.Timestamp - lastStockData.Timestamp).TotalDays;
             var priceDifference = mostRecentStockData.ClosingPrice - lastStockData.ClosingPrice;
+            var priceDifferenceDisplay = Math.Abs(Math.Round(priceDifference, 2));
             
             if (totalVolume < _guruConfigurations.MaxVolumeForRecommendation)
             {
@@ -50,10 +51,8 @@ namespace MarketGuru.Core.Services
                     Reason = $"Stock is bellow volume threshold ({_guruConfigurations.MaxVolumeForRecommendation} over {periodLengthInDays} days)",
                     Recommendation = Recommendation.Unknown
                 };
-
             }
 
-            var priceDifferenceDisplay = Math.Abs(Math.Round(priceDifference, 2));
             if (priceDifference < _guruConfigurations.SellThreshold)
             {
                 _logger.LogDebug("Calculate recommendation for stock: {Stock}: {Recommendation}", stock.Ticker, "SELL");
