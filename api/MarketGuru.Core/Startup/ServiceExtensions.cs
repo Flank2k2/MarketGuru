@@ -39,7 +39,7 @@ namespace MarketGuru.Core
                 });
 
                 services.AddScoped<IStockDataService,StockDataService>();
-                services.AddScoped<StockRecommendationService>();
+                services.AddScoped<IStockRecommendationService,StockRecommendationService>();
 
                 return services;
             }

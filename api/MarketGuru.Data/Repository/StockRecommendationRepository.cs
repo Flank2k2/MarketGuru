@@ -9,7 +9,12 @@ using Microsoft.Extensions.Options;
 
 namespace MarketGuru.Data
 {
-    public sealed class StockRecommendationRepository
+    public interface IStockRecommendationRepository
+    {
+        Task<string> SaveStoreRecommendationHistory(StockRecommendationHistory model, CancellationToken token = default);
+    }
+
+    public sealed class StockRecommendationRepository : IStockRecommendationRepository
     {
         private readonly ILogger _logger;
         private readonly FirestoreConfiguration _settings;

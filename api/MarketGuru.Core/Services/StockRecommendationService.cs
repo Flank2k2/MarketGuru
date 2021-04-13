@@ -9,7 +9,12 @@ using Microsoft.Extensions.Options;
 
 namespace MarketGuru.Core.Services
 {
-    public class StockRecommendationService
+    public interface IStockRecommendationService
+    {
+        StockRecommendation CreateRecommendation(Stock stock, StockHistory history);
+    }
+
+    public class StockRecommendationService : IStockRecommendationService
     {
         private readonly ILogger _logger;
         private readonly MarketGuruConfigurations _guruConfigurations;

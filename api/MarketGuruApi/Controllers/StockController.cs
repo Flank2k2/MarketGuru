@@ -20,9 +20,9 @@ namespace MarketGuruApi.Controllers
     {
         private readonly ILogger _logger;
         private readonly IStockDataService _dataService;
-        private readonly StockRecommendationService _recommendationService;
-        private readonly StockRecommendationRepository _repository;
-        public StockController(ILogger<StockController> logger, IStockDataService dataService, StockRecommendationService recommendationService, StockRecommendationRepository repository)
+        private readonly IStockRecommendationService _recommendationService;
+        private readonly IStockRecommendationRepository _repository;
+        public StockController(ILogger<StockController> logger, IStockDataService dataService, IStockRecommendationService recommendationService, IStockRecommendationRepository repository)
         {
             _logger = logger;
             _dataService = dataService;
