@@ -43,6 +43,8 @@ The codebase is separated in 2 part:
 - Api implements healthcheck endpoint: [/healthx](https://marketguru-api-3tfjt4473a-uc.a.run.app/healthz)
 - Api prodide OpenAPI endpoint: [/swagger](https://marketguru-api-3tfjt4473a-uc.a.run.app/swagger/index.html)
 - Api is deployed to GCP Cloud Run on commits to `main` branch [deploy-cloud-run](https://github.com/Flank2k2/MarketGuru/blob/main/.github/workflows/deploy-cloud-run.yml)  
+- No secrets are stored in plaintext.
+- Separate cloud service accounts are used to run tests and deploy the app.
 
 ### Front-end point of interest:
 
