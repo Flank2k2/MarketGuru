@@ -15,7 +15,7 @@ namespace MarketGuru.Core.Tests
         private static readonly IOptions<MarketGuruConfigurations> DefaultSettings = Options.Create(new MarketGuruConfigurations()
         {
             MaxVolumeForRecommendation = 10000,
-            MaxPeriodsForRecommendation = 3
+            MaxPeriodsForRecommendation = 5
         });
 
 
@@ -24,7 +24,7 @@ namespace MarketGuru.Core.Tests
         public void StockEvaluateProperPeriod()
         {
             //Arrange
-            var stock = new Stock() { Ticker = "AAPL" };
+            var stock = new Stock() { Ticker = "MSFT" };
             var lst2 = StockGenerator.GenerateHistory(DateTime.Now, Recommendation.Sell,
                 volume: DefaultSettings.Value.MaxVolumeForRecommendation, periods: DefaultSettings.Value.MaxPeriodsForRecommendation);
             var lst1 = StockGenerator.GenerateHistory(DateTime.Now.AddMonths(-4), Recommendation.Buy,
@@ -43,7 +43,7 @@ namespace MarketGuru.Core.Tests
         public void StockBellowThreshold()
         {
             //Arrange
-            var stock = new Stock() { Ticker = "AAPL" };
+            var stock = new Stock() { Ticker = "MSFT" };
             var history = new StockHistory(StockGenerator.GenerateHistory(DateTime.Now, Recommendation.Sell, volume: 100));
 
             //Act
@@ -60,8 +60,9 @@ namespace MarketGuru.Core.Tests
         public void StockBuyRecommendation()
         {
             //Arrange
-            var stock = new Stock() { Ticker = "AAPL" };
-            var history = new StockHistory(StockGenerator.GenerateHistory(DateTime.Now, Recommendation.Buy));
+            var stock = new Stock() { Ticker = "MSFT" };
+            var history = new StockHistory(StockGenerator.GenerateHistory(DateTime.Now, Recommendation.Buy,
+                volume: DefaultSettings.Value.MaxVolumeForRecommendation, periods: DefaultSettings.Value.MaxPeriodsForRecommendation));
 
             //Act
             var services = new StockRecommendationService(new NullLogger<StockRecommendationService>(), DefaultSettings);
@@ -75,8 +76,9 @@ namespace MarketGuru.Core.Tests
         public void StockSellRecommendation()
         {
             //Arrange
-            var stock = new Stock() { Ticker = "AAPL" };
-            var history = new StockHistory(StockGenerator.GenerateHistory(DateTime.Now, Recommendation.Sell));
+            var stock = new Stock() { Ticker = "MSFT" };
+            var history = new StockHistory(StockGenerator.GenerateHistory(DateTime.Now, Recommendation.Sell,
+                volume: DefaultSettings.Value.MaxVolumeForRecommendation, periods: DefaultSettings.Value.MaxPeriodsForRecommendation));
 
             //Act
             var services = new StockRecommendationService(new NullLogger<StockRecommendationService>(), DefaultSettings);

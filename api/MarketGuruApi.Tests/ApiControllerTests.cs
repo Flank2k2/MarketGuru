@@ -28,7 +28,6 @@ namespace MarketGuruApi.Tests
             var response = await client.GetAsync(url);
 
             // Assert
-            var responseTxt = response.Content.ReadAsStringAsync().Result;
             response.EnsureSuccessStatusCode();
             Assert.Contains("application/json", $"{response.Content.Headers.ContentType}");
         }

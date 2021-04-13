@@ -27,16 +27,21 @@ namespace MarketGuru.Core.Tests
                 list.Add(new StockDataPoint() { Timestamp = startDate.AddMonths(-1 * i), ClosingPrice = value + 0.001m, Volume = volumePerDay, Low = 0, High = 10000 });
             }
 
-            //Add start and end values             
-            if (trend == Recommendation.Buy)
+            //Add start and end values      
+            switch (trend)
             {
-                list.Add(new StockDataPoint() { Timestamp = startDate.AddMonths(0), ClosingPrice = min, Volume = volumePerDay + leftOverVolume, Low = 0, High = 10000});
-                list.Add(new StockDataPoint() { Timestamp = startDate.AddMonths(-1 * (periods - 1)), ClosingPrice = max, Volume = volumePerDay, Low = 0, High = 10000 });
-            }
-            else
-            {
-                list.Add(new StockDataPoint() { Timestamp = startDate.AddMonths(0), ClosingPrice = max, Volume = volumePerDay + leftOverVolume, Low = 0, High = 10000 });
-                list.Add(new StockDataPoint() { Timestamp = startDate.AddMonths(-1 * (periods - 1)), ClosingPrice = min, Volume = volumePerDay, Low = 0, High = 10000 });
+                case Recommendation.Buy:
+                    list.Add(new StockDataPoint() { Timestamp = startDate.AddMonths(0), ClosingPrice = max, Volume = volumePerDay + leftOverVolume, Low = 0, High = 10000 });
+                    list.Add(new StockDataPoint() { Timestamp = startDate.AddMonths(-1 * (periods - 1)), ClosingPrice = min, Volume = volumePerDay, Low = 0, High = 10000 });
+                    break;
+
+                case Recommendation.Sell:
+                    list.Add(new StockDataPoint() { Timestamp = startDate.AddMonths(0), ClosingPrice = min, Volume = volumePerDay + leftOverVolume, Low = 0, High = 10000 });
+                    list.Add(new StockDataPoint() { Timestamp = startDate.AddMonths(-1 * (periods - 1)), ClosingPrice = max, Volume = volumePerDay, Low = 0, High = 10000 });
+                    break;
+                    
+                default:
+                    throw new NotImplementedException();
             }
 
             return list;

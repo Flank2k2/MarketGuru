@@ -31,9 +31,9 @@ namespace MarketGuruApi.Tests.Utils
             new StockDataPoint() {ClosingPrice = 125.0m, High = 130.0m, Low = 120.0m, Timestamp = DateTime.UtcNow.AddMonths(-4), Volume = 1000},
         });
 
+        public static string FirestoreEnvironment = $"environment/test";
         public static string FirestoreProjectId = "marketguru-data";
         public static string UnknownStock = "UNKNOWN";
-        public static string FirestoreEnvironment = $"environment/test{Guid.NewGuid()}";
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         { 

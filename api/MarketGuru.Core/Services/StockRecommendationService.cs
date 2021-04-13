@@ -31,11 +31,11 @@ namespace MarketGuru.Core.Services
             //Really this should be implement with proper collection and IComparable but for the moment we are dealing with n<1000 
             var sortedHistory = history.History.OrderByDescending(x => x.Timestamp);
             var periods = sortedHistory.Take(_guruConfigurations.MaxPeriodsForRecommendation);
-            var initialStockData = periods.First();
-            var finalStockData = periods.Last();
+            var mostRecentStockData = periods.First();
+            var lastStockData = periods.Last();
             var totalVolume = periods.Sum(x => x.Volume);
-            var periodLengthInDays = (finalStockData.Timestamp - initialStockData.Timestamp).TotalDays;
-            var priceDifference = finalStockData.ClosingPrice - initialStockData.ClosingPrice;
+            var periodLengthInDays = (mostRecentStockData.Timestamp - lastStockData.Timestamp).TotalDays;
+            var priceDifference = mostRecentStockData.ClosingPrice - lastStockData.ClosingPrice;
             
             if (totalVolume < _guruConfigurations.MaxVolumeForRecommendation)
             {
