@@ -19,6 +19,7 @@ namespace MarketGuruApi.Tests
 
         [Theory]
         [InlineData("/")]
+        [InlineData("/healthz")]
         public async Task Get_GenericApiEndpoints(string url)
         {
             // Arrange
