@@ -24,12 +24,18 @@
               </v-text-field>
             </v-row>
             <v-row align="center" justify="center">
-              <v-btn :disabled="!valid" @click="getRecommendation" outlined
+              <v-btn :disabled="!valid" @click="getRecommendation" v-if="!this.loading" outlined
                 >Get recommendation</v-btn
               >
+                <v-progress-linear v-if="this.loading && !this.stock.displayName"
+                  indeterminate
+                  rounded
+                  height="6"
+                ></v-progress-linear>
             </v-row>
           </v-form>
         </v-container>
+
         <StockInformation />
         <StockPriceTable />
       </v-container>
@@ -48,6 +54,7 @@ import { mapActions } from "vuex";
 import StockPriceTable from "./components/StockPriceTable";
 import StockInformation from "./components/StockInformation";
 import ErrorNotifications from "./components/ErrorNotifications";
+import { mapState } from "vuex";
 
 export default {
   name: "App",
@@ -68,7 +75,7 @@ export default {
       },
     ],
   }),
-
+computed: { ...mapState(["loading", "stock"]) },
   methods: {
     getRecommendation: async function () {
       var rst = this.$refs.form.validate();
